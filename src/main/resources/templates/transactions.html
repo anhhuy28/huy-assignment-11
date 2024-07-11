@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transactions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            background-color: #008080; /* Teal */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin: 0;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #20B2AA; /* Light Sea Green */
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #E0FFFF; /* Light Cyan */
+        }
+        tr:hover {
+            background-color: #AFEEEE; /* Pale Turquoise */
+        }
+        a {
+            color: #008080; /* Teal */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Transaction History</h1>
+    </header>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="transaction : ${transactions}">
+                <td><a th:href="@{/transactions/{id}(id=${transaction.id})}" th:text="${transaction.id}"></a></td>
+                <td th:text="${transaction.date}"></td>
+                <td th:text="${transaction.description}"></td>
+                <td th:text="${transaction.amount}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

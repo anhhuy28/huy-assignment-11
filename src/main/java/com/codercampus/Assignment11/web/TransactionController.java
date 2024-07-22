@@ -15,21 +15,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class TransactionController {
 
-	@Autowired
-	private TransactionService transactionService;
+    @Autowired
+    private TransactionService transactionService;
 
-	@GetMapping("/transactions")
-	public String getAllTransactions(Model model) {
-		List<Transaction> transactions = transactionService.findAllTransactions();
-		model.addAttribute("transactions", transactions);
-		return "transactions";
-	}
+    @GetMapping("/transactions")
+    public String getAllTransactions(Model model) {
+        List<Transaction> transactions = transactionService.findAllTransactions();
+        model.addAttribute("transactions", transactions);
+        return "transactions";
+    }
 
     @GetMapping("/transactions/{transactionId}")
     public String getTransactionById(@PathVariable Long transactionId, Model model) {
-        Optional<Transaction> transaction = transactionService.findTransactionById(transactionId);
-        if (transaction.isPresent()) {
-            model.addAttribute("transaction", transaction.get());
+        Optional<Transaction> transactionOpt = transactionService.findTransactionById(transactionId);
+        if (transactionOpt.isPresent()) {
+            Transaction transaction = transactionOpt.get();
+            if ("Credit".equals(transaction.getType())) {
+                transaction.setAmount(transaction.getAmount().negate());
+            }
+            model.addAttribute("transaction", transaction);
             return "transaction-detail";
         } else {
             return "redirect:/transactions";
